@@ -1,0 +1,12 @@
+
+**/bin/*
+**/obj/*
+**/bin/**
+**/obj/**
+data.json
+.idea
+.git
+ttr_couter.db
+**/Migrations/*
+EfcDataAccess/ttr_couter.db-shm
+EfcDataAccess/ttr_couter.db-wal
