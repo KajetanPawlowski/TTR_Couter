@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+
+<div style="width: @Diameter; height: @Diameter; background-color: @Color; border-radius: 50%; cursor: pointer;" @onclick="HandleClick"></div>
+
+@code {
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public string Color { get; set; } = "blue";
+
+    [Parameter]
+    public string Diameter { get; set; } = "100px";
+
+    private async Task HandleClick(MouseEventArgs e)
+    {
+        await OnClick.InvokeAsync();
+    }
+    
+}
