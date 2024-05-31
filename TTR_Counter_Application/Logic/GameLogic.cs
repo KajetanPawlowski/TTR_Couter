@@ -63,7 +63,7 @@ public class GameLogic : IGameLogic
                 moveScore = 10;
                 break;
             case 6:
-                moveScore = 12;
+                moveScore = 15;
                 break;
         }
         game.Moves.Add(new Move("BuildTrains", moveScore, game.CurrentPlayer));

@@ -1,1 +1,108 @@
 ﻿@page "/"
+@using TTR_Counter_Domain.Model
+@using TTR_Counter_Domain.Services
+@using TTR_Counter_Application.Logic_Interfaces
+@inject GameService GameService
+@inject IGameLogic GameLogic
+@inject NavigationManager _navMgr
+
+<h2>Welcome to Player Management</h2>
+
+
+@if (players.Any())
+{
+    <h3>Players</h3>
+    <button @onclick="StartGame"><h3>Start Game</h3></button>
+    <table class="player-table">
+        <thead>
+            <tr>
+                <th>Player Name</th>
+                <th>Color</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in players)
+            {
+                <tr>
+                    <td>@player.Login</td>
+                    <td><select id="color" @bind="newPlayerColor">
+                        @foreach (var color in colors)
+                        {
+                            <option value="@color">@color</option>
+                        }
+                    </select></td>
+                    <td><button @onclick="()=> RemovePlayer(player)">Remove</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (players.Count<5)
+{
+    <h3>Add New Player</h3>
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" @bind="newPlayerName" />
+    </div>
+    <button @onclick="SavePlayer">Add</button>
+}
+
+@code {
+    private bool showTable = false;
+    private bool showAddPlayer = false;
+    private string newPlayerName = "";
+    private string newPlayerColor = "Gray";
+    private string[] colors = { "Red", "Blue", "Green", "Yellow", "Black" };
+
+    private List<Player> players = new List<Player>();
+
+    private void ShowTable()
+    {
+        showTable = true;
+        showAddPlayer = false;
+    }
+
+    private void AddPlayer()
+    {
+        showTable = false;
+        showAddPlayer = true;
+    }
+
+    private void SavePlayer()
+    {
+        players.Add(new Player { Login = newPlayerName, Color = newPlayerColor });
+        newPlayerName = "";
+        showTable = true;
+        showAddPlayer = false;
+    }
+
+    private void RemovePlayer(Player player)
+    {
+        players.Remove(player);
+    }
+
+    private async Task StartGame()
+    {
+        try
+        {
+            TTR_Counter_Domain.Model.Game newGame = await GameLogic.StartGame(players);
+            GameService.Games.Add(newGame);
+            _navMgr.NavigateTo($"/game/{newGame.GameId}");
+        }
+        catch(Exception ex)
+        {
+            if(ex.Message.Equals("You need to have friends!"))
+            {
+                //add pop up here
+            }
+            else
+            {
+                throw ex;
+            }
+        }
+        
+        
+    }
+}

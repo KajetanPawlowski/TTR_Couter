@@ -1,0 +1,84 @@
+.button-container {
+    margin-top: 20px;
+    border: 1px solid red ;
+}
+
+.move-button {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 1px solid red ;
+}
+
+.move-button:hover {
+    background-color: #0056b3;
+}
+
+.train-button {
+    margin-bottom: 5px;
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 1px solid red ;
+}
+
+.train-button:hover {
+    background-color: #218838;
+}
+.move-button-container{
+    flex-direction: column;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.property {
+    font-weight: bold;
+}
+
+.player-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.player-table th, .player-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.player-table th {
+    background-color: #f2f2f2;
+}
+
+.player-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+

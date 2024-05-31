@@ -1,3 +1,6 @@
+using TTR_Counter_Application.Logic;
+using TTR_Counter_Application.Logic_Interfaces;
+using TTR_Counter_Domain.Services;
 using WebSingleClientApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<IGameLogic, GameLogic>();
+builder.Services.AddSingleton<GameService>();
 
 var app = builder.Build();
 
