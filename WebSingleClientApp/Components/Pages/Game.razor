@@ -114,10 +114,22 @@ else
     
     private TTR_Counter_Domain.Model.Game CurrentGame { get; set; }
     private List<Move> LastTenMoves = new List<Move>();
-
+    private Timer timer;
+    private string currentTime;
+    
+    protected override void OnInitialized()
+    {
+        timer = new Timer(UpdatePage, null, 0, 2000); // 5000 ms = 5 seconds
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         LoadGame();
+    }
+    private void UpdatePage(object state)
+    {
+        currentTime = DateTime.Now.ToString("HH:mm:ss"); // Example update
+        InvokeAsync(StateHasChanged);
     }
 
     private void LoadGame()
