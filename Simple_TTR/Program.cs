@@ -33,7 +33,7 @@ int playersCount = int.Parse(Console.ReadLine());
             {
                 int playerNumber = currentPlayerIndex + 1;
                 // Prompt the user to select a move
-                Console.WriteLine($"{game.NextPlayer.Login} Select a move:");
+                Console.WriteLine($"{game.CurrentPlayer.Login} Select a move:");
                 Console.WriteLine("1. Take Connections");
                 Console.WriteLine("2. Pick Train Cards");
                 Console.WriteLine("3. Place Train Station");
@@ -46,24 +46,24 @@ int playersCount = int.Parse(Console.ReadLine());
                 {
                     case 1:
                         Console.WriteLine("Taking Connections...");
-                        await gameLogic.TakeConnections(game, game.NextPlayer); // For simplicity, always use the first player
+                        await gameLogic.TakeConnections(game); // For simplicity, always use the first player
                         
                         break;
                     case 2:
                         Console.WriteLine("Picking Train Cards...");
-                        await gameLogic.PickTrainCards(game, game.NextPlayer); // For simplicity, always use the first player
+                        await gameLogic.PickTrainCards(game); // For simplicity, always use the first player
                         
                         break;
                     case 3:
                         Console.WriteLine("Placing Train Station...");
-                        await gameLogic.PlaceTrainStation(game, game.NextPlayer); // For simplicity, always use the first player
+                        await gameLogic.PlaceTrainStation(game); // For simplicity, always use the first player
                         
                         break;
                     case 4:
                         Console.WriteLine("Placing Trains...");
                         Console.Write("Enter the length of the train: ");
                         int trainLength = int.Parse(Console.ReadLine());
-                        await gameLogic.PlaceTrains(game, game.NextPlayer, trainLength); // For simplicity, always use the first player
+                        await gameLogic.PlaceTrains(game, trainLength); // For simplicity, always use the first player
                         
                         break;
                     default:

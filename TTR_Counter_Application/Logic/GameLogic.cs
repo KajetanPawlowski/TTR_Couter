@@ -16,33 +16,33 @@ public class GameLogic : IGameLogic
         return Task.FromResult(new Game(random.Next(10000, 100000),players));
     }
 
-    public Task<Game> TakeConnections(Game game, Player player)
+    public Task<Game> TakeConnections(Game game)
     {
-        game.Moves.Add(new Move("Connections", 0, player));
+        game.Moves.Add(new Move("Connections", 0, game.CurrentPlayer));
         return Task.FromResult(CheckGameStatus(game));
     }
 
-    public Task<Game> PickTrainCards(Game game, Player player)
+    public Task<Game> PickTrainCards(Game game)
     {
-        game.Moves.Add(new Move("PickCards", 0, player));
+        game.Moves.Add(new Move("PickCards", 0, game.CurrentPlayer));
         return Task.FromResult(CheckGameStatus(game));
     }
 
-    public Task<Game> PlaceTrainStation(Game game, Player player)
+    public Task<Game> PlaceTrainStation(Game game)
     {
-        if (player.StationCount < 1)
+        if (game.CurrentPlayer.StationCount < 1)
         {
             throw new Exception("You dont have any stations left!");
         }
 
-        game.Moves.Add(new Move("PlaceStation", 0, player));
-        game.Players.FirstOrDefault(p => p.Login.Equals(player.Login))!.StationCount--;
+        game.Moves.Add(new Move("PlaceStation", 0, game.CurrentPlayer));
+        game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.StationCount--;
         return Task.FromResult(CheckGameStatus(game));
     }
 
-    public Task<Game> PlaceTrains(Game game, Player player, int trainLength)
+    public Task<Game> PlaceTrains(Game game, int trainLength)
     {
-        if (player.TrainCount < trainLength)
+        if (game.CurrentPlayer.TrainCount < trainLength)
         {
             throw new Exception("You dont have enough trains!");
         }
@@ -66,11 +66,11 @@ public class GameLogic : IGameLogic
                 moveScore = 12;
                 break;
         }
-        game.Moves.Add(new Move("BuildTrains", moveScore, player));
-        game.Players.FirstOrDefault(p => p.Login.Equals(player.Login))!.TrainCount-=trainLength;
-        game.Players.FirstOrDefault(p => p.Login.Equals(player.Login))!.Points+=moveScore;
+        game.Moves.Add(new Move("BuildTrains", moveScore, game.CurrentPlayer));
+        game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.TrainCount-=trainLength;
+        game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.Points+=moveScore;
 
-        if (game.Players.FirstOrDefault(p => p.Login.Equals(player.Login))!.TrainCount <= 2)
+        if (game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.TrainCount <= 2)
         {
             game.GameState = "LastRound";
         }
@@ -94,14 +94,14 @@ public class GameLogic : IGameLogic
                 throw new Exception("Game Has Finished!");
         }
 
-        game.NextPlayer = NextPlayer(game);
+        game.CurrentPlayer = NextPlayer(game);
         return game;
     }
 
-    private Player NextPlayer(Game game)
+    public Player NextPlayer(Game game)
     {
-        int index = game.Players.IndexOf(game.NextPlayer);
-        if (index == game.Players.Count-1)
+        int index = game.Players.IndexOf(game.CurrentPlayer);
+        if (index == game.Players.Count - 1)
         {
             return game.Players[0];
         }

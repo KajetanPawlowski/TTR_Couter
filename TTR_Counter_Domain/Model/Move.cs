@@ -12,4 +12,9 @@ public class Move
         MovePoints = movePoints;
         Player = player;
     }
+
+    public override string ToString()
+    {
+        return Player.Login + " - " + MoveType;
+    }
 }

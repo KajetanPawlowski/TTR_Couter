@@ -8,7 +8,7 @@ public class Game
     
     public List<Move> Moves { get; set; }
     
-    public Player NextPlayer { get; set; }
+    public Player CurrentPlayer { get; set; }
     
     public int MovesLeft { get; set; }
 
@@ -19,6 +19,6 @@ public class Game
         GameState = "Play"; // LastRound, Finished
         Moves = new List<Move>();
         MovesLeft = players.Count;
-        NextPlayer = players[0];
+        CurrentPlayer = players[0];
     }
 }
