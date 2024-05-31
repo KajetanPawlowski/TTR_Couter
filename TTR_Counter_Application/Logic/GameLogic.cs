@@ -94,6 +94,20 @@ public class GameLogic : IGameLogic
                 throw new Exception("Game Has Finished!");
         }
 
+        game.NextPlayer = NextPlayer(game);
         return game;
+    }
+
+    private Player NextPlayer(Game game)
+    {
+        int index = game.Players.IndexOf(game.NextPlayer);
+        if (index == game.Players.Count-1)
+        {
+            return game.Players[0];
+        }
+        else
+        {
+            return game.Players[index + 1];
+        }
     }
 }
