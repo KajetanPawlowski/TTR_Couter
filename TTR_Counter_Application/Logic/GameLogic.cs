@@ -19,13 +19,13 @@ public class GameLogic : IGameLogic
     public Task<Game> TakeConnections(Game game)
     {
         game.Moves.Add(new Move("Connections", 0, game.CurrentPlayer));
-        return Task.FromResult(CheckGameStatus(game));
+        return Task.FromResult(NextPlayer(game));
     }
 
     public Task<Game> PickTrainCards(Game game)
     {
         game.Moves.Add(new Move("PickCards", 0, game.CurrentPlayer));
-        return Task.FromResult(CheckGameStatus(game));
+        return Task.FromResult(NextPlayer(game));
     }
 
     public Task<Game> PlaceTrainStation(Game game)
@@ -35,9 +35,9 @@ public class GameLogic : IGameLogic
             throw new Exception("You dont have any stations left!");
         }
 
-        game.Moves.Add(new Move("PlaceStation", 0, game.CurrentPlayer));
+        game.Moves.Add(new Move("PlaceStation", 0, game.CurrentPlayer,0,1));
         game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.StationCount--;
-        return Task.FromResult(CheckGameStatus(game));
+        return Task.FromResult(NextPlayer(game));
     }
 
     public Task<Game> PlaceTrains(Game game, int trainLength)
@@ -50,6 +50,9 @@ public class GameLogic : IGameLogic
         int moveScore = 0;
         switch (trainLength)
         {
+            case 1:
+                moveScore = 1;
+                break;
             case 2:
                 moveScore = 2;
                 break;
@@ -59,26 +62,50 @@ public class GameLogic : IGameLogic
             case 4:
                 moveScore = 7;
                 break;
-            case 5:
-                moveScore = 10;
-                break;
             case 6:
                 moveScore = 15;
                 break;
+            case 8:
+                moveScore = 21;
+                break;
         }
-        game.Moves.Add(new Move("BuildTrains", moveScore, game.CurrentPlayer));
+        game.Moves.Add(new Move("BuildTrains", moveScore, game.CurrentPlayer, trainLength,0));
         game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.TrainCount-=trainLength;
         game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.Points+=moveScore;
+        
+        return Task.FromResult(NextPlayer(game));
+    }
 
-        if (game.Players.FirstOrDefault(p => p.Login.Equals(game.CurrentPlayer.Login))!.TrainCount <= 2)
+    public Task<Game> UndoMove(Game game)
+    {
+        if (game.Moves.Any())
         {
-            game.GameState = "LastRound";
+            Move lastMove = game.Moves.Last();
+            game.Moves.Remove(lastMove);
+            game.Players.FirstOrDefault(p => p.Login.Equals(lastMove.Player.Login))!.TrainCount+=lastMove.TrainsUsed;
+            game.Players.FirstOrDefault(p => p.Login.Equals(lastMove.Player.Login))!.Points-=lastMove.MovePoints;
+            game.Players.FirstOrDefault(p => p.Login.Equals(lastMove.Player.Login))!.StationCount+=lastMove.StationUsed;
+            game.CurrentPlayer = game.Players.FirstOrDefault(p => p.Login.Equals(lastMove.Player.Login))!;
+            if (game.GameState.Equals("LastRound"))
+            {
+                game.MovesLeft++;
+            }
+            return Task.FromResult(CheckGameStatus(game));
         }
-        return Task.FromResult(CheckGameStatus(game));
+
+        throw new Exception("Cannot Undo Move");
     }
 
     private Game CheckGameStatus(Game game)
     {
+        if (game.Players.Any(p => p.TrainCount <= 2))
+        {
+            game.GameState = "LastRound";
+        }
+        else
+        {
+            game.GameState = "Play";
+        }
         switch (game.GameState)
         {
             case "Play":
@@ -93,21 +120,22 @@ public class GameLogic : IGameLogic
             case "Finished":
                 throw new Exception("Game Has Finished!");
         }
-
-        game.CurrentPlayer = NextPlayer(game);
+        
         return game;
     }
 
-    public Player NextPlayer(Game game)
+    public Game NextPlayer(Game game)
     {
         int index = game.Players.IndexOf(game.CurrentPlayer);
         if (index == game.Players.Count - 1)
         {
-            return game.Players[0];
+            game.CurrentPlayer = game.Players[0];
+            return  CheckGameStatus(game);
         }
         else
         {
-            return game.Players[index + 1];
+            game.CurrentPlayer = game.Players[index + 1];
+            return CheckGameStatus(game);
         }
     }
 }

@@ -10,5 +10,6 @@ public interface IGameLogic
     Task<Game> PickTrainCards(Game game);
     Task<Game> PlaceTrainStation(Game game);
     Task<Game> PlaceTrains(Game game, int trainLength);
-    Player NextPlayer(Game game);
+    Task<Game> UndoMove(Game game);
+    Game NextPlayer(Game game);
 }

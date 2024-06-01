@@ -26,12 +26,12 @@
             {
                 <tr>
                     <td>@player.Login</td>
-                    <td><select id="color" @bind="newPlayerColor">
+                        <td><select id="color" @bind="player.Color">
                         @foreach (var color in colors)
                         {
                             <option value="@color">@color</option>
                         }
-                    </select></td>
+                        </select></td>
                     <td><button @onclick="()=> RemovePlayer(player)">Remove</button></td>
                 </tr>
             }

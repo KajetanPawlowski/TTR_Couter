@@ -38,8 +38,10 @@ else
     }
     
     <div class="row">
+        <button class="move-button" @onclick="UndoMove">UNDO</button>
         <p><span class="property">Game ID:</span> @CurrentGame.GameId</p>
-        <p><span class="property">Current Player:</span> @CurrentGame.CurrentPlayer.Login</p>
+        <p><span class="property">Current Player:</span> @CurrentGame.CurrentPlayer.Login
+            <div class="color-dot" style="background-color:@CurrentGame.CurrentPlayer.Color"></div></p>
     </div>
     <table class="player-table">
         <thead>
@@ -78,11 +80,12 @@ else
                     <button class="move-button" @onclick="PlaceTrainStation">Place Train Station</button>
                 </div>
                 <div class="col move-button-container">
-                    <button class="train-button" @onclick="() => PlaceTrains(2)">Place 2 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(3)">Place 3 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(4)">Place 4 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(5)">Place 5 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(6)">Place 6 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(1)">1 Train</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(2)">2 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(3)">3 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(4)">4 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(6)">6 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(8)">8 Trains</button>
                 </div>
             </div>
         </div>
@@ -181,6 +184,13 @@ else
     {
         LastTenMoves = CurrentGame.Moves.TakeLast(10).ToList();
         LastTenMoves.Reverse();
+    }
+
+    private async Task UndoMove()
+    {
+        CurrentGame = await GameLogic.UndoMove(CurrentGame);
+        LogMove();
+        StateHasChanged();
     }
 
 }
