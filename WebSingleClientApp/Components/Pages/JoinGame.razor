@@ -1,0 +1,29 @@
+@page "/join"
+@inject NavigationManager _navMgr
+
+<h3>Join Game</h3>
+
+<div class="form-group">
+    <label for="gameId">Enter Game ID:</label>
+    <input type="text" id="gameId" @bind="gameId" class="form-control" />
+</div>
+<button class="btn btn-primary" @onclick="Join">Join</button>
+
+@code {
+    private string gameId;
+
+    private void Join()
+    {
+        if (!string.IsNullOrEmpty(gameId))
+        {
+            try
+            {
+                _navMgr.NavigateTo($"/game/{gameId}");
+            }
+            catch (Exception ex)
+            {
+                //DO NOT FORGET!!!
+            }
+        }
+    }
+}

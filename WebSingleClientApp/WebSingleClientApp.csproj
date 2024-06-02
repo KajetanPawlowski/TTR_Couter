@@ -8,7 +8,11 @@
 
     <ItemGroup>
       <Folder Include="Components\UIElements\" />
-      <Folder Include="data\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TTR_Counter_Application\TTR_Counter_Application.csproj" />
+      <ProjectReference Include="..\TTR_Counter_Domain\TTR_Counter_Domain.csproj" />
     </ItemGroup>
 
 </Project>

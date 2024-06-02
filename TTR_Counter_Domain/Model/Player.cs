@@ -16,4 +16,13 @@ public class Player
         Points = 0;
         StationCount = 3;
     }
+
+    public Player()
+    {
+        Login = "NN";
+        Color = "Gray";
+        TrainCount = 45;
+        Points = 0;
+        StationCount = 3;
+    }
 }

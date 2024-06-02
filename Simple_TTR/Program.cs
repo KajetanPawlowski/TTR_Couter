@@ -11,7 +11,7 @@ IPlayerLogic playerLogic = new PlayerLogic();
         List<Player> players = new List<Player>();
     
 int currentPlayerIndex = 0;
-Console.WriteLine("How Many Players:");
+Console.Write("How Many Players:");
 int playersCount = int.Parse(Console.ReadLine());
 
         // Create five players
@@ -33,7 +33,7 @@ int playersCount = int.Parse(Console.ReadLine());
             {
                 int playerNumber = currentPlayerIndex + 1;
                 // Prompt the user to select a move
-                Console.WriteLine($"Player {playerNumber} Select a move:");
+                Console.WriteLine($"{game.CurrentPlayer.Login} Select a move:");
                 Console.WriteLine("1. Take Connections");
                 Console.WriteLine("2. Pick Train Cards");
                 Console.WriteLine("3. Place Train Station");
@@ -46,25 +46,25 @@ int playersCount = int.Parse(Console.ReadLine());
                 {
                     case 1:
                         Console.WriteLine("Taking Connections...");
-                        await gameLogic.TakeConnections(game, game.Players[currentPlayerIndex]); // For simplicity, always use the first player
-                        NextPlayerIndex(currentPlayerIndex);
+                        await gameLogic.TakeConnections(game); // For simplicity, always use the first player
+                        
                         break;
                     case 2:
                         Console.WriteLine("Picking Train Cards...");
-                        await gameLogic.PickTrainCards(game, game.Players[currentPlayerIndex]); // For simplicity, always use the first player
-                        NextPlayerIndex(currentPlayerIndex);
+                        await gameLogic.PickTrainCards(game); // For simplicity, always use the first player
+                        
                         break;
                     case 3:
                         Console.WriteLine("Placing Train Station...");
-                        await gameLogic.PlaceTrainStation(game, game.Players[currentPlayerIndex]); // For simplicity, always use the first player
-                        NextPlayerIndex(currentPlayerIndex);
+                        await gameLogic.PlaceTrainStation(game); // For simplicity, always use the first player
+                        
                         break;
                     case 4:
                         Console.WriteLine("Placing Trains...");
                         Console.Write("Enter the length of the train: ");
                         int trainLength = int.Parse(Console.ReadLine());
-                        await gameLogic.PlaceTrains(game, game.Players[currentPlayerIndex], trainLength); // For simplicity, always use the first player
-                        NextPlayerIndex(currentPlayerIndex);
+                        await gameLogic.PlaceTrains(game, trainLength); // For simplicity, always use the first player
+                        
                         break;
                     default:
                         Console.WriteLine("Invalid choice.");
@@ -87,15 +87,3 @@ int playersCount = int.Parse(Console.ReadLine());
         {
             Console.WriteLine($"An error occurred: {ex.Message}");
         }
-
-void NextPlayerIndex(int currentIndex)
-{
-    if (currentIndex >= players.Count - 1)
-    {
-        currentPlayerIndex = 0;
-    }
-    else
-    {
-        currentPlayerIndex++;
-    }
-}
