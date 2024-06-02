@@ -4,6 +4,14 @@
 @using TTR_Counter_Domain.Services
 @inject IGameLogic GameLogic
 @inject GameService GameService
+@inject NavigationManager _navMgr
+
+@if (CurrentGame == null)
+{
+    <p>Game: @GameId Not Found!  </p>
+}
+else
+{
 
 @if (CurrentGame.GameState.Equals("Finished"))
 {
@@ -38,11 +46,30 @@ else
     }
     
     <div class="row">
-        <button class="move-button" @onclick="UndoMove">UNDO</button>
+        
         <p><span class="property">Game ID:</span> @CurrentGame.GameId</p>
-        <p><span class="property">Current Player:</span> @CurrentGame.CurrentPlayer.Login
-            <div class="color-dot" style="background-color:@CurrentGame.CurrentPlayer.Color"></div></p>
+        <p><span class="property">Current Player:</span> @CurrentGame.CurrentPlayer.Login</p>
     </div>
+    
+    <div class="container" style="background-color:@CurrentGame.CurrentPlayer.Color">
+        <div class="button-container">
+            <div class="big-buttons grid-2x2">
+                <button class="move-button" @onclick="PickTrainCards">Pick Train Cards</button>
+                <button class="move-button" @onclick="PlaceTrainStation">Place Train Station</button>
+                <div class="small-buttons grid-3x2">
+                    <button class="train-button" @onclick="() => PlaceTrains(1)">1 Train</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(2)">2 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(3)">3 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(4)">4 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(6)">6 Trains</button>
+                    <button class="train-button" @onclick="() => PlaceTrains(8)">8 Trains</button>
+                    </div>
+                <button class="move-button" @onclick="TakeConnections">Take Connections</button>
+                </div>
+        </div>
+        <button class="move-button" @onclick="UndoMove">UNDO</button>
+    </div>
+
     <table class="player-table">
         <thead>
         <tr>
@@ -65,31 +92,6 @@ else
         </tbody>
     </table>
     
-    <div class="container">
-        <div class="button-container">
-            <div class="row">
-                <div class="col">
-                    <button class="move-button" @onclick="TakeConnections">Take Connections</button>
-                </div>
-                <div class="col">
-                    <button class="move-button" @onclick="PickTrainCards">Pick Train Cards</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <button class="move-button" @onclick="PlaceTrainStation">Place Train Station</button>
-                </div>
-                <div class="col move-button-container">
-                    <button class="train-button" @onclick="() => PlaceTrains(1)">1 Train</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(2)">2 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(3)">3 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(4)">4 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(6)">6 Trains</button>
-                    <button class="train-button" @onclick="() => PlaceTrains(8)">8 Trains</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <table class="player-table">
         <thead>
         <tr>
@@ -110,12 +112,14 @@ else
         }
     </table>
 }
+        
+}
 
 @code {
     [Parameter]
     public string GameId { get; set; }
     
-    private TTR_Counter_Domain.Model.Game CurrentGame { get; set; }
+    private TTR_Counter_Domain.Model.Game? CurrentGame { get; set; }
     private List<Move> LastTenMoves = new List<Move>();
     private Timer timer;
     private string currentTime;
@@ -137,8 +141,15 @@ else
 
     private void LoadGame()
     {
-        int nextGameId = int.Parse(GameId);
-        CurrentGame = GameService.Games.FirstOrDefault(g => g.GameId == nextGameId);
+        try
+        {
+            int nextGameId = int.Parse(GameId);
+            CurrentGame = GameService.Games.FirstOrDefault(g => g.GameId == nextGameId);
+        }
+        catch (Exception e)
+        {
+            _navMgr.NavigateTo("/join");
+        }
     }
 
     private async Task TakeConnections()
@@ -157,8 +168,18 @@ else
 
     private async Task PlaceTrainStation()
     {
-        CurrentGame = await GameLogic.PlaceTrainStation(CurrentGame);
-        LogMove();
+        try
+        {
+            CurrentGame = await GameLogic.PlaceTrainStation(CurrentGame);
+            LogMove();
+        }
+        catch(Exception ex)
+        {
+            if(ex.Message.Equals("You dont have any stations left!"))
+            {
+                    //add pop up here
+            }
+        }
         StateHasChanged(); // Update the UI
     }
 
@@ -167,6 +188,7 @@ else
         try
         {
             CurrentGame = await GameLogic.PlaceTrains(CurrentGame, trainLength);
+            LogMove();
         }
         catch(Exception ex)
         {
@@ -175,8 +197,6 @@ else
                 //add pop up here
             }
         }
-        
-        LogMove();
         StateHasChanged(); // Update the UI
     }
 

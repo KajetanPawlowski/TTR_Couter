@@ -27,6 +27,10 @@ public class Move
 
     public override string ToString()
     {
+        if (TrainsUsed >0)
+        {
+            return Player.Login + " - " + MoveType +" - "+ TrainsUsed;
+        }
         return Player.Login + " - " + MoveType;
     }
 }

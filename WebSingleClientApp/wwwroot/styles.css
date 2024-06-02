@@ -1,42 +1,3 @@
-.button-container {
-    margin-top: 20px;
-    border: 1px solid red ;
-}
-
-.move-button {
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: 1px solid red ;
-}
-
-.move-button:hover {
-    background-color: #0056b3;
-}
-
-.train-button {
-    margin-bottom: 5px;
-    padding: 8px 15px;
-    background-color: #28a745;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: 1px solid red ;
-}
-
-.train-button:hover {
-    background-color: #218838;
-}
-.move-button-container{
-    flex-direction: column;
-}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -45,7 +6,8 @@ body {
 
 .container {
     width: 80%;
-    margin: 0 auto;
+    padding-bottom: 10px;
+    margin: 0 auto 10px;
 }
 
 h2 {
@@ -65,6 +27,7 @@ h2 {
 .player-table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
 .player-table th, .player-table td {
@@ -80,13 +43,67 @@ h2 {
 .player-table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
 .color-dot {
     display: inline-block;
-    width: 15px;  /* Adjust size as needed */
-    height: 15px;  /* Adjust size as needed */
+    width: 15px; /* Adjust size as needed */
+    height: 15px; /* Adjust size as needed */
     border-radius: 50%;
-    margin-left: 10px;  /* Adjust spacing as needed */
+    margin-left: 10px; /* Adjust spacing as needed */
     vertical-align: middle;
 }
 
+.tables-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Adjust gap between tables */
+    margin-bottom: 20px;
+}
 
+.button-container {
+    margin-top: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.big-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px; /* Optional: space between items */
+}
+
+.small-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px; /* Optional: space between items */
+}
+
+.move-button, .train-button {
+    width: 100%;
+    height: auto;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.move-button {
+    background-color: #007bff;
+}
+
+.move-button:hover {
+    background-color: #0056b3;
+}
+
+.train-button {
+    padding: 8px 15px;
+    background-color: #28a745;
+}
+
+.train-button:hover {
+    background-color: #218838;
+}
