@@ -13,6 +13,7 @@
     <ItemGroup>
       <ProjectReference Include="..\TTR_Counter_Application\TTR_Counter_Application.csproj" />
       <ProjectReference Include="..\TTR_Counter_Domain\TTR_Counter_Domain.csproj" />
+      <ProjectReference Include="..\TTR_Counter_EfcData\TTR_Counter_EfcData.csproj" />
     </ItemGroup>
 
 </Project>

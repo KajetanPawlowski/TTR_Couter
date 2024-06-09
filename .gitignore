@@ -9,5 +9,5 @@ data.json
 .git
 ttr_couter.db
 **/Migrations/*
-EfcDataAccess/ttr_couter.db-shm
-EfcDataAccess/ttr_couter.db-wal
+TTR_Counter_EfcData/ttr_couter.db-shm
+TTR_Counter_EfcData/ttr_couter.db-wal

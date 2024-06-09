@@ -136,6 +136,10 @@ else
     private void UpdatePage(object state)
     {
         currentTime = DateTime.Now.ToString("HH:mm:ss"); // Example update
+        if (CurrentGame != null)
+        {
+            LogMove();
+        };
         InvokeAsync(StateHasChanged);
     }
 
