@@ -136,6 +136,7 @@ else
     private void UpdatePage(object state)
     {
         currentTime = DateTime.Now.ToString("HH:mm:ss"); // Example update
+        LogMove();
         InvokeAsync(StateHasChanged);
     }
 
@@ -213,4 +214,4 @@ else
         StateHasChanged();
     }
 
-}
+}xq
