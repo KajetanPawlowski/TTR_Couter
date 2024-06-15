@@ -7,11 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="8.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\TTR_Counter_Domain\TTR_Counter_Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DAO_Interfaces\" />
+      <Folder Include="DAO\" />
     </ItemGroup>
 
 </Project>
